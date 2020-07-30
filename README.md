@@ -1,5 +1,4 @@
 # Auction House API by Austin Woo
-API_URL = Auctions endpoint hosted by Amazon Web Services Cloud Formation
 
 ## Utilizes
  - Serverless
@@ -11,19 +10,19 @@ API_URL = Auctions endpoint hosted by Amazon Web Services Cloud Formation
 
 ## Endpoints
 ### Creating An Auction. 
-POST { API_URL }/auction
+POST /auction
 
 ### Getting All Auctions. 
-GET { API_URL }/auctions
+GET /auctions
 
 ### Get Auction by ID. 
-GET { API_URL }/auction/:id
+GET /auction/:id
 
 ### Place a bid on an auction item. 
-PATCH { API_URL }/auction/:id/bid
+PATCH /auction/:id/bid
 
 ### Upload base64 image to Amazon S3 bucket
-PATCH { API_URL }/auction/:id/picture
+PATCH /auction/:id/picture
 
 #### How it updates
 Using Amazon EventBridge, list of auction items are checked for expiration time and closed if expiration time is reached.
@@ -34,6 +33,5 @@ processAuctions function in auction_project/src/handlers/processAuctions is run 
 
 #### Data
 Auction item data is hosted via Amazon DynamoDB
-
 
 ** All request bodies are validated using @middy/validator, schemas located in auction_project/src/middlewares/schemas**
