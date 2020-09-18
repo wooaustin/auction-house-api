@@ -2,7 +2,7 @@
 
 ## Utilizes
  - Serverless
- - AWS (CloudFormation, IAM Management, EventBridge, Simple Message Service, Simple Message Queue, DynamoDB)
+ - AWS (CloudFormation, Lambda, IAM Management, EventBridge, Simple Message Service, Simple Message Queue, DynamoDB)
  - Auth0
  - Node.js
  - CORS
