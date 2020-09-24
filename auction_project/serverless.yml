@@ -72,6 +72,14 @@ functions:
     handler: src/handlers/processAuctions.handler
     events:
       - schedule: rate(1 minute)
+  getAuctionsBySeller:
+    handler: src/handlers/getAuctionsByEmail
+    events:
+      - http:
+        method: GET
+        path: /auction/menu/${seller}
+        cors: true
+        authorizer: ${self:custom.authorizer}
 
 custom:
   authorizer: arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:function:auth-service-${self:provider.stage}-auth
