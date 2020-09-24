@@ -5,18 +5,15 @@ import createError from 'http-errors';
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
 
-export async function getAuctionsBySellerEmail(email){
+export async function getAuctionsBySellerEmail(seller){
     let auctions;
+
     const params = {
         TableName: process.env.AUCTIONS_TABLE_NAME,
-        IndexName: 'seller',
-        KeyConditionExpression: ' #seller = :seller',
+        KeyConditionExpression: 'seller = :seller',
         ExpressionAttributeValues: {
-            ':seller' : email,
+            ':seller' : seller,
         },
-        ExpressionAttributeNames: {
-            '#seller' : 'seller',
-        }
     }
 
     try{
@@ -36,13 +33,18 @@ export async function getAuctionsBySellerEmail(email){
 
 export async function getAuctionsBySeller(event, context){
     let auctions;
-    const { seller } = event.pathParameters;
-    auctions = getAuction(id);
+    const { email } = event.requestContext.authorizer;
+    auctions = getAuctionsBySellerEmail(email);
+    if(auctions === '{}'){
+        return {
+            statusCode: 201,
+            body: "Auctions is empty"
+        }
+    }
     return {
         statusCode: 200,
         body: JSON.stringify(auctions)
     }
 }
 
-export const handler = commonMiddleware(getAuctionsBySeller)
-    .use(validator({inputSchema: getAuctionsBySeller, useDefaults: true}));
+export const handler = commonMiddleware(getAuctionsBySeller);
