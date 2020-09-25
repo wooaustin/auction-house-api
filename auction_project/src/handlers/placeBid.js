@@ -42,6 +42,35 @@ async function placeBid(event, context){
         ReturnValues: 'ALL_NEW',
     };
 
+
+    const sellerSubjectBody = {
+        subject: `Your item has a new bid`,
+        body: `${email} has placed a bid on your item for ${amount}`,
+    }
+
+    const previousBidderSubjectBody = {
+        subject: `You have been outbid`,
+        body: `${email} has outbid you with the bid price ${amount}`
+    }
+
+    const notifySeller = sqs.sendMessage({
+        QueueUrl: process.env.MAIL_QUEUE_URL,
+        MessageBody: JSON.stringify({
+            subject: sellerSubjectBody.subject,
+            recipient: auction.seller,
+            body: sellerSubjectBody.body,
+        })
+    }).promise();
+
+    const notifyBidder = sqs.sendMessage({
+        QueueUrl: process.env.MAIL_QUEUE_URL,
+        MessageBody: JSON.stringify({
+            subject: previousBidderSubjectBody.subject,
+            recipient: email,
+            body: previousBidderSubjectBody.body,
+        })
+    })
+
     let updatedAuction;
     try{
         const result = await dynamodb.update(params).promise();

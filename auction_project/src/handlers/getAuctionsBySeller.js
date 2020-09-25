@@ -5,7 +5,7 @@ import createError from 'http-errors';
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
 
-export async function getAuctionsBySellerEmail(seller){
+async function getAuctionsBySellerEmail(seller){
     let auctions;
 
     const params = {
@@ -34,13 +34,7 @@ export async function getAuctionsBySellerEmail(seller){
 export async function getAuctionsBySeller(event, context){
     let auctions;
     const { email } = event.requestContext.authorizer;
-    auctions = getAuctionsBySellerEmail(email);
-    if(auctions === '{}'){
-        return {
-            statusCode: 201,
-            body: "Auctions is empty"
-        }
-    }
+    auctions = await getAuctionsBySellerEmail(email);
     return {
         statusCode: 200,
         body: JSON.stringify(auctions)
