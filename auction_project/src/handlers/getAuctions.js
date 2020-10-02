@@ -14,7 +14,7 @@ async function getAuctions(event, context){
     const params = {
         TableName: process.env.AUCTIONS_TABLE_NAME,
         IndexName: 'statusAndEndDate',
-        KeyConditionExpression: ' #status = :status',
+        KeyConditionExpression: 'status = :status',
         ExpressionAttributeValues: {
             ':status' : status,
         },

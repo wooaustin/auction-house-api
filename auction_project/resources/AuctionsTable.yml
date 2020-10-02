@@ -12,6 +12,8 @@ AuctionsTable:
         AttributeType: S
       - AttributeName: seller
         AttributeType: S
+      - AttributeName: highestBid.bidder
+        AttributeType: S
     KeySchema:
       - AttributeName: id
         KeyType: HASH
@@ -27,6 +29,14 @@ AuctionsTable:
       - IndexName: sellerAndEndDate
         KeySchema:
           - AttributeName: seller
+            KeyType: HASH
+          - AttributeName: endingAt
+            KeyType: RANGE
+        Projection:
+          ProjectionType: ALL
+      - IndexName: bidderAndEndDate
+        KeySchema: 
+          - AttributeName: highestBid.bidder
             KeyType: HASH
           - AttributeName: endingAt
             KeyType: RANGE

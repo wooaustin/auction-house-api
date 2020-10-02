@@ -80,7 +80,14 @@ functions:
           path: /auction/menu/myauctions
           cors: true
           authorizer: ${self:custom.authorizer}
-
+  getAuctionsByBidder:
+    handler: src/handlers/getAuctionsByBidder.handler
+    events:
+      - http:
+          method: GET
+          path: /auctions/menu/mybids
+          cors: true
+          authorizer: ${self:custom.authorizer}
 custom:
   authorizer: arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:function:auth-service-${self:provider.stage}-auth
   AuctionsTable:

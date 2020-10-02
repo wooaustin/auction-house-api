@@ -10,3 +10,4 @@ AuctionsTableIAM:
     - ${self:custom.AuctionsTable.arn}
     - !Join ['/', ['${self:custom.AuctionsTable.arn}', 'index', 'statusAndEndDate']]
     - !Join ['/', ['${self:custom.AuctionsTable.arn}', 'index', 'sellerAndEndDate']]
+    - !Join ['/', ['${self:custom.AuctionsTable.arn}', 'index', 'bidderAndEndDate']]
