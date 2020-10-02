@@ -5,7 +5,7 @@ import { getAuction } from './getAuctionById';
 import placeBidSchema from '../lib/schemas/placeBidSchema';
 import validator from '@middy/validator';
 const dynamodb = new AWS.DynamoDB.DocumentClient();
-
+const sqs = new AWS.SQS();
 async function placeBid(event, context){
     const { id }  = event.pathParameters;
     const { amount } = event.body;

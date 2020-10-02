@@ -4,18 +4,17 @@ import createError from 'http-errors';
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
-
-async function getAuctionsBySellerEmail(seller){
+async function getAuctionsBySeller(event, context){
     let auctions;
-
+    const { email } = event.requestContext.authorizer;
     const params = {
         TableName: process.env.AUCTIONS_TABLE_NAME,
+        IndexName: 'sellerAndEndDate',
         KeyConditionExpression: 'seller = :seller',
         ExpressionAttributeValues: {
-            ':seller' : seller,
+            ':seller' : email,
         },
-    }
-
+    };
     try{
         const result = await dynamodb.query(params).promise();
         auctions = result.Items;
@@ -23,21 +22,11 @@ async function getAuctionsBySellerEmail(seller){
     catch(error){
         console.error(error);
         throw new createError.InternalServerError(error);
+        
     }
-    if(!auctions){
-        throw new createError.NotFound(`Auctions with seller "${seller}" not found`);
-    }
-    return auctions;
-}
-
-
-export async function getAuctionsBySeller(event, context){
-    let auctions;
-    const { email } = event.requestContext.authorizer;
-    auctions = await getAuctionsBySellerEmail(email);
     return {
         statusCode: 200,
-        body: JSON.stringify(auctions)
+        body: JSON.stringify(auctions),
     }
 }
 

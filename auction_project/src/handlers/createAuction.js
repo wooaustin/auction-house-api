@@ -4,7 +4,7 @@ import commonMiddleware from '../lib/commonMiddleware';
 import createError from 'http-errors';
 import createAuctionSchema from '../lib/schemas/createAuctionSchema';
 import validator from '@middy/validator';
-
+import truncateEmail from '../lib/truncateEmail';
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
 async function createAuction(event, context) {
@@ -12,7 +12,7 @@ async function createAuction(event, context) {
   const { email } = event.requestContext.authorizer;
   const now = new Date();
   const endDate = new Date();
-  endDate.setHours(now.getHours() + 48);
+  endDate.setHours(now.getHours() + 1);
   const auction = {
     id: uuid(),
     title,
