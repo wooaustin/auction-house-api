@@ -34,7 +34,7 @@ async function placeBid(event, context){
     const params = {
         TableName: process.env.AUCTIONS_TABLE_NAME,
         Key: { id },
-        UpdateExpression: 'set highestBid.amount = :amount, highestBid.bidder = :bidder',
+        UpdateExpression: 'set highestBid.amount = :amount, bidder = :bidder',
         ExpressionAttributeValues: {
             ':amount' : amount,
             ':bidder' : email,

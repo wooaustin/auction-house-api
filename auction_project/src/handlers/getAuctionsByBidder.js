@@ -10,7 +10,7 @@ async function getAuctionsByBidder(event, context){
     const params = {
         TableName: process.env.AUCTIONS_TABLE_NAME,
         IndexName: 'bidderAndEndDate',
-        KeyConditionExpression: 'highestBid.bidder = :bidder',
+        KeyConditionExpression: 'bidder = :bidder',
         ExpressionAttributeValues:{
             ':bidder' : email,
         }
